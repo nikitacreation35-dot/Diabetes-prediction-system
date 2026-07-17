@@ -4,38 +4,45 @@ import os
 import gradio as gr
 import joblib
 
-# Load the trained Decision Tree model at startup
-deployed_dt = joblib.load('diabetes_prediction_model.pkl')
+# Load the trained model
+model = joblib.load("diabetes_prediction_model.pkl")
 
-# --- CODE BLOCK: PREDICTION LOGIC FOR 5 FEATURES ---
+
 def predict_diabetes(pregnancies, glucose, bmi, age):
-    # The model expects a 2D array matching the exact order of x_train
+    """
+    Predict diabetes using the trained Decision Tree model.
+    """
+
+    # Input must be in the same order used during training
     input_data = [[pregnancies, glucose, bmi, age]]
-    prediction = deployed_dt.predict(input_data)
-    
-    # Interpret the binary outcome (typically 1 for positive, 0 for negative)
+
+    prediction = model.predict(input_data)
+
     if prediction[0] == 1:
         return "Prediction: High Risk of Diabetes (Positive)"
     else:
         return "Prediction: Low Risk of Diabetes (Negative)"
-# ---------------------------------------------------
 
-# --- CODE BLOCK: GRADIO INTERFACE SETUP ---
+
+# Create Gradio Interface
 interface = gr.Interface(
     fn=predict_diabetes,
     inputs=[
-        gr.Number(label="Pregnancies (Number of times pregnant)"),
-        gr.Number(label="Glucose (Plasma glucose concentration)"),
-         
-        gr.Number(label="BMI (Body mass index)"),
-        gr.Number(label="Age (Years)")
+        gr.Number(label="Pregnancies"),
+        gr.Number(label="Glucose"),
+        gr.Number(label="BMI"),
+        gr.Number(label="Age"),
     ],
-    outputs=gr.Text(label="Assessment Result"),
+    outputs=gr.Textbox(label="Assessment Result"),
     title="Diabetes Prediction System",
-    description="Enter the medical metrics to predict diabetes risk using a Decision Tree Machine Learning model."
+    description="Enter the medical details to predict diabetes risk using a Decision Tree model.",
 )
-# ------------------------------------------
 
-if _name_ == "_main_":
-    # Render network configuration
-    interface.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 7860)))
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 7860))
+
+    interface.launch(
+        server_name="0.0.0.0",
+        server_port=port
+    )
