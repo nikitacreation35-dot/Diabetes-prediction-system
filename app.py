@@ -35,8 +35,13 @@ interface = gr.Interface(
     ],
     outputs=gr.Textbox(label="Assessment Result"),
     title="Diabetes Prediction System",
-    description="Enter the medical metrics to predict diabetes risk using a Decision Tree Machine Learning model\n
-    Name:Nikita Ahlawat\nRollno:252142\nClass:MCA"
+    description="""Enter the medical metrics to predict diabetes risk using a Decision Tree Machine Learning model.
+
+    Name: Nikita Ahlawat
+    Roll No: 252142
+    Class: MCA
+    """
+    description="Enter the medical metrics to predict diabetes risk using a Decision Tree Machine Learning model.\n\nName: Nikita Ahlawat\nRoll No: 252142\nClass: MCA"
 )
 
 
